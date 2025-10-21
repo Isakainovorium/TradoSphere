@@ -137,3 +137,22 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# TradoSphere Documentation & Tools (Private - Local Only)
+# All documentation files - only visible to AI agents and developer
+*.md
+!README.md
+!LICENSE.md
+
+# Context Engine - AI tooling (private)
+context-engine/
+
+# Documentation text files
+*.txt
+tradosphere-*.md
+
+# Task and summary reports
+*_REPORT.md
+*_SUMMARY.md
+*COMPLETION*.md
+MCP_SETUP.md
