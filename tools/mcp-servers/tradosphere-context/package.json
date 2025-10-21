@@ -1,6 +1,6 @@
 {
   "name": "@tradosphere/context-engine",
-  "version": "1.0.0",
+  "version": "1.2.3",
   "description": "Context engine for TradoSphere project indexing and code retrieval",
   "main": "dist/index.js",
   "scripts": {
