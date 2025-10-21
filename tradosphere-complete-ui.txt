@@ -1,0 +1,2392 @@
+# TradoSphere: Complete Enhanced UI Documentation
+*Complete Design Specification with Routing Architecture*
+
+**Version:** 2.0 (Enhanced with Full Routing)  
+**Date:** January 20, 2025  
+**Status:** Production Ready
+
+---
+
+## ðŸ"‹ Document Purpose
+
+This document provides **complete specifications** for designing all **47 unique pages** in TradoSphere with:
+- **Complete routing structure** and URL patterns
+- **Navigation flow** between pages
+- Detailed layouts and components
+- Enhanced visual effects and animations
+- Gamification elements
+- Tier-specific access controls
+- Mobile and desktop considerations
+
+**Design Goal:** Create an app so visually engaging that traders don't want to leave.
+
+**Design Systems**: Dark theme (primary), Light theme (secondary), Terminal theme (optional)  
+**Component Library**: shadcn/ui base + custom enhanced components
+
+---
+
+## ðŸ—ºï¸ COMPLETE ROUTING ARCHITECTURE
+
+### Route Hierarchy & Access Control
+
+```
+TradoSphere Routes (47 Total Pages)
+
+PUBLIC ROUTES (No authentication required)
+â"‚
+â"œâ"€â"€ /                           [Landing Page]
+â"œâ"€â"€ /pricing                    [Pricing Tiers]
+â"œâ"€â"€ /about                      [About Us]
+â"œâ"€â"€ /faq                        [FAQ]
+â"œâ"€â"€ /legal/terms                [Terms of Service]
+â"œâ"€â"€ /legal/privacy              [Privacy Policy]
+â"œâ"€â"€ /legal/disclaimer           [Trading Disclaimer]
+â"‚
+â"œâ"€â"€ AUTHENTICATION ROUTES
+â"‚   â"œâ"€â"€ /login                  [Login Page]
+â"‚   â"œâ"€â"€ /signup                 [Sign Up Page]
+â"‚   â"œâ"€â"€ /verify-email           [Email Verification]
+â"‚   â""â"€â"€ /reset-password         [Password Reset]
+â"‚
+â""â"€â"€ AUTHENTICATED ROUTES (Requires login)
+    â"‚
+    â"œâ"€â"€ FEED SECTION
+    â"‚   â"œâ"€â"€ /feed                       [Main Feed] (Default landing)
+    â"‚   â""â"€â"€ /feed/signal/:signalId      [Signal Detail Modal/Page]
+    â"‚
+    â"œâ"€â"€ LIVE STREAMING SECTION
+    â"‚   â"œâ"€â"€ /live                       [Live Streams Hub]
+    â"‚   â"œâ"€â"€ /live/:streamId             [Watch Stream]
+    â"‚   â"œâ"€â"€ /live/start                 [Start Stream Setup] (Elite+)
+    â"‚   â""â"€â"€ /live/settings/:streamId    [Stream Settings] (Host only)
+    â"‚
+    â"œâ"€â"€ PORTFOLIO SECTION
+    â"‚   â"œâ"€â"€ /portfolio                  [Portfolio Dashboard]
+    â"‚   â"œâ"€â"€ /portfolio/calendar         [Performance Calendar] (Grow+)
+    â"‚   â"œâ"€â"€ /portfolio/trades           [Trade Log]
+    â"‚   â""â"€â"€ /portfolio/trades/:tradeId  [Trade Detail]
+    â"‚
+    â"œâ"€â"€ COMPETITIONS SECTION
+    â"‚   â"œâ"€â"€ /competitions                       [Competitions Hub]
+    â"‚   â"œâ"€â"€ /competitions/create               [Create Competition] (Gladiator+)
+    â"‚   â"œâ"€â"€ /competitions/:competitionId       [Competition Detail]
+    â"‚   â"œâ"€â"€ /competitions/:competitionId/leaderboard  [Live Leaderboard]
+    â"‚   â""â"€â"€ /competitions/:competitionId/results      [Competition Results]
+    â"‚
+    â"œâ"€â"€ DISCOVER SECTION
+    â"‚   â"œâ"€â"€ /discover                   [Discover Feed]
+    â"‚   â"œâ"€â"€ /discover/creators          [Creator Directory]
+    â"‚   â""â"€â"€ /discover/signals           [Signal Explorer]
+    â"‚
+    â"œâ"€â"€ PROFILE SECTION
+    â"‚   â"œâ"€â"€ /profile/:username          [Public Profile]
+    â"‚   â""â"€â"€ /profile/edit               [Edit Profile] (Own profile only)
+    â"‚
+    â"œâ"€â"€ SOCIAL SECTION
+    â"‚   â"œâ"€â"€ /buddies                    [Buddies List]
+    â"‚   â"œâ"€â"€ /buddies/messages           [Messages Inbox]
+    â"‚   â"œâ"€â"€ /buddies/messages/:conversationId  [Conversation Thread]
+    â"‚   â"œâ"€â"€ /buddies/clans              [Clans List]
+    â"‚   â""â"€â"€ /buddies/watchlists         [Watchlists]
+    â"‚
+    â"œâ"€â"€ LEADERBOARDS
+    â"‚   â""â"€â"€ /leaderboards               [Global Leaderboards]
+    â"‚
+    â"œâ"€â"€ LEARNING HUB (Grow+)
+    â"‚   â"œâ"€â"€ /learning                   [Learning Hub Q&A]
+    â"‚   â""â"€â"€ /learning/journal           [Saved Concepts]
+    â"‚
+    â"œâ"€â"€ SETTINGS HUB
+    â"‚   â"œâ"€â"€ /settings                   [Settings Hub Root] (redirects to /settings/profile)
+    â"‚   â"œâ"€â"€ /settings/profile           [Profile Settings]
+    â"‚   â"œâ"€â"€ /settings/subscription      [Subscription Management]
+    â"‚   â"œâ"€â"€ /settings/theme             [Theme Customization]
+    â"‚   â"œâ"€â"€ /settings/notifications     [Notification Preferences]
+    â"‚   â"œâ"€â"€ /settings/security          [Security & 2FA]
+    â"‚   â"œâ"€â"€ /settings/connections       [Broker API Connections]
+    â"‚   â""â"€â"€ /settings/creator           [Creator Settings] (Elite+)
+    â"‚
+    â"œâ"€â"€ CREATOR DASHBOARD (Elite+)
+    â"‚   â"œâ"€â"€ /creator                    [Creator Dashboard Root] (redirects to /creator/dashboard)
+    â"‚   â"œâ"€â"€ /creator/dashboard          [Creator Overview]
+    â"‚   â"œâ"€â"€ /creator/analytics          [Analytics Deep Dive]
+    â"‚   â"œâ"€â"€ /creator/content            [Content Manager]
+    â"‚   â"œâ"€â"€ /creator/subscribers        [Subscriber CRM]
+    â"‚   â"œâ"€â"€ /creator/earnings           [Earnings Dashboard]
+    â"‚   â""â"€â"€ /creator/schedule           [Content Scheduler]
+    â"‚
+    â""â"€â"€ ERROR PAGES
+        â"œâ"€â"€ /404                        [Page Not Found]
+        â"œâ"€â"€ /500                        [Server Error]
+        â""â"€â"€ /maintenance                [Maintenance Mode]
+```
+
+---
+
+## ðŸ§­ NAVIGATION IMPLEMENTATION GUIDE
+
+### Primary Navigation (Desktop - Sidebar)
+
+**Location:** Left sidebar, collapsible to icon-only mode  
+**Width:** 240px (expanded), 64px (collapsed)  
+**Position:** Fixed, full height
+
+```
+EXPANDED VIEW:
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ [TradoSphere Logo]      â"‚
+â"‚ [Collapse â†]             â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ  Feed                 â"‚ â†' /feed
+â"‚ ðŸ"º Live                 â"‚ â†' /live
+â"‚ ðŸ'¼ Portfolio            â"‚ â†' /portfolio
+â"‚ ðŸ† Competitions         â"‚ â†' /competitions
+â"‚ ðŸ" Discover             â"‚ â†' /discover
+â"‚ ðŸ'¬ Buddies             â"‚ â†' /buddies
+â"‚ ðŸ"ˆ Leaderboards        â"‚ â†' /leaderboards
+â"‚ ðŸ"š Learning [ðŸŒ± Badge] â"‚ â†' /learning (Grow+ only)
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [Avatar] @username      â"‚ â†' /profile/:username
+â"‚ [Tier Badge âœ¨]         â"‚
+â"‚ [XP Progress Bar]       â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ âš™ï¸ Settings             â"‚ â†' /settings
+â"‚ ðŸš€ Logout               â"‚ (Logs out, redirects to /)
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+
+COLLAPSED VIEW:
+â"Œâ"€â"€â"€â"€â"€â"
+â"‚ [â†']â"‚
+â"œâ"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ  â"‚
+â"‚ ðŸ"º â"‚
+â"‚ ðŸ'¼ â"‚
+â"‚ ðŸ† â"‚
+â"‚ ðŸ" â"‚
+â"‚ ðŸ'¬ â"‚
+â"‚ ðŸ"ˆ â"‚
+â"‚ ðŸ"š â"‚
+â"œâ"€â"€â"€â"€â"€â"¤
+â"‚ [@]â"‚
+â"œâ"€â"€â"€â"€â"€â"¤
+â"‚ âš™ï¸ â"‚
+â""â"€â"€â"€â"€â"€â"˜
+```
+
+**Navigation Behavior:**
+- **Active Page:** Glowing icon + gradient background + bold label
+- **Hover:** Icon glows, background highlights
+- **Click:** Smooth route transition (200ms fade)
+- **Locked Features:** Grayed out with lock icon, tooltip shows tier requirement
+
+**Keyboard Shortcuts:**
+- `G + H` → /feed (Home)
+- `G + L` → /live
+- `G + P` → /portfolio
+- `G + C` → /competitions
+- `G + D` → /discover
+
+---
+
+### Mobile Navigation (Bottom Bar)
+
+**Location:** Fixed bottom, full width  
+**Height:** 64px  
+**Background:** Glassmorphism
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚  ðŸ       ðŸ"º      âž•       ðŸ'¬      ðŸ'¤       â"‚
+â"‚ Feed    Live    Post    Chat     You      â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Navigation Links:**
+1. **Feed** → /feed
+2. **Live** → /live
+3. **Post** → Opens create signal modal (Grow+ only)
+4. **Chat** → /buddies/messages
+5. **You** → /profile/:username
+
+**Features:**
+- Active icon glows + label appears
+- Notification badges (red dots with count)
+- Haptic feedback on tap (mobile)
+- Smooth slide transitions between pages
+
+---
+
+## ðŸ"€ ROUTING PATTERNS & BEHAVIORS
+
+### Dynamic Route Parameters
+
+**Pattern:** `/resource/:dynamicParam`
+
+**Examples:**
+```
+/feed/signal/:signalId
+  Example: /feed/signal/abc123
+  Access: All tiers
+  Behavior: Opens signal detail (modal on desktop, full page on mobile)
+
+/live/:streamId
+  Example: /live/xyz789
+  Access: All tiers (view), Elite+ (host)
+  Behavior: Loads live stream view
+
+/profile/:username
+  Example: /profile/trader_pro
+  Access: All tiers
+  Behavior: Shows public profile for that user
+
+/buddies/messages/:conversationId
+  Example: /buddies/messages/conv456
+  Access: All tiers (must be buddies)
+  Behavior: Opens conversation thread
+
+/portfolio/trades/:tradeId
+  Example: /portfolio/trades/trade789
+  Access: All tiers
+  Behavior: Shows detailed trade analysis
+
+/competitions/:competitionId
+  Example: /competitions/btc-battle-jan
+  Access: All tiers
+  Behavior: Shows competition details + leaderboard
+```
+
+### Query Parameters
+
+**Pattern:** `/route?param=value&param2=value2`
+
+**Common Query Parameters:**
+```
+/feed?filter=following
+  - filter: all | following | top-signals
+  - Example: /feed?filter=following
+
+/discover/creators?tier=elite&sort=followers
+  - tier: free | grow | elite | gladiator | legend
+  - sort: followers | win-rate | subscribers
+  - Example: /discover/creators?tier=elite&sort=win-rate
+
+/competitions?status=active&type=1v1
+  - status: upcoming | active | completed
+  - type: 1v1 | team | ffa
+  - Example: /competitions?status=active&type=1v1
+
+/leaderboards?metric=pl&timeframe=30d
+  - metric: pl | win-rate | followers
+  - timeframe: 7d | 30d | all-time
+  - Example: /leaderboards?metric=pl&timeframe=30d
+
+/portfolio/trades?date-from=2025-01-01&date-to=2025-01-31
+  - date-from: ISO date
+  - date-to: ISO date
+  - Example: /portfolio/trades?date-from=2025-01-01
+```
+
+### Protected Routes
+
+**Authentication Check:**
+```
+IF user NOT logged in:
+  REDIRECT to /login with ?redirect=[intended-url]
+  Example: User tries to visit /portfolio
+  → Redirects to /login?redirect=/portfolio
+  → After login, redirects back to /portfolio
+```
+
+**Tier Access Check:**
+```
+IF user tier < required tier:
+  SHOW upgrade modal/banner on page
+  DISABLE locked features with tier badge indicator
+  EXAMPLE: Free user visits /learning
+  → Shows page with "Upgrade to TS Grow" modal
+```
+
+### Special Routes
+
+**Default Routes:**
+```
+/ (root)
+  - IF logged in → REDIRECT to /feed
+  - IF NOT logged in → SHOW landing page
+
+/settings (root)
+  → REDIRECT to /settings/profile
+
+/creator (root)
+  - IF Elite+ → REDIRECT to /creator/dashboard
+  - IF NOT Elite+ → REDIRECT to /settings/subscription
+
+/profile (without username)
+  → REDIRECT to /profile/:currentUsername
+```
+
+**Modal Routes (Desktop only):**
+```
+/feed/signal/:signalId
+  - Desktop: Opens as modal overlay on /feed
+  - Mobile: Full page navigation
+  - Close modal → Returns to /feed
+
+Create Signal (triggered from button)
+  - Desktop: Modal overlay, URL stays on current page
+  - Mobile: Full page, URL changes to /create-signal
+```
+
+---
+
+## ðŸ"„ PAGE-BY-PAGE ROUTING SPECIFICATIONS
+
+### PUBLIC PAGES
+
+#### 1. Landing Page
+**Route:** `/`  
+**Access:** Public  
+**Navigation From:** Direct URL, logout redirect  
+**Navigation To:**
+- /signup (Sign up CTA)
+- /login (Login link)
+- /pricing (Pricing CTA)
+- /about (Footer link)
+
+**Behavior:**
+- If user already logged in → Auto-redirect to /feed
+- Smooth scroll to sections on page
+- CTAs track conversion with analytics
+
+---
+
+#### 2. Pricing Page
+**Route:** `/pricing`  
+**Access:** Public  
+**Navigation From:** Landing page, header, settings  
+**Navigation To:**
+- /signup?tier=[selected-tier] (Upgrade CTAs)
+- /login (If user wants to login first)
+
+**Behavior:**
+- Highlights user's current tier if logged in
+- Upgrade buttons include tier parameter
+- Comparison table scrolls horizontally on mobile
+
+---
+
+#### 3-5. About, FAQ, Legal Pages
+**Routes:** `/about`, `/faq`, `/legal/terms`, `/legal/privacy`, `/legal/disclaimer`  
+**Access:** Public  
+**Navigation From:** Footer, legal links during signup  
+**Navigation To:** Back to previous page
+
+---
+
+### AUTHENTICATION PAGES
+
+#### 6. Login Page
+**Route:** `/login`  
+**Query Params:** `?redirect=/intended-url` (optional)  
+**Access:** Public  
+**Navigation From:** Header login link, protected route redirects  
+**Navigation To:**
+- /feed (Default after successful login)
+- ?redirect URL (If specified)
+- /signup (Sign up link)
+- /reset-password (Forgot password link)
+
+**Behavior:**
+- Remember redirect URL in query
+- Show loading spinner during auth
+- Error messages shake animation
+- OAuth buttons redirect to providers
+
+---
+
+#### 7. Sign Up Page
+**Route:** `/signup`  
+**Query Params:** `?tier=[tier-name]` (optional - pre-selects tier)  
+**Access:** Public  
+**Navigation From:** Landing CTAs, login page, pricing page  
+**Navigation To:**
+- /verify-email (After successful signup)
+- /login (Already have account link)
+
+**Behavior:**
+- Pre-select tier from query param
+- Real-time password strength validation
+- Terms checkbox required
+- Disable submit until valid
+
+---
+
+#### 8. Email Verification
+**Route:** `/verify-email`  
+**Access:** Post-signup (no auth yet)  
+**Navigation From:** /signup completion  
+**Navigation To:**
+- /feed (After verification complete)
+- /signup (Change email link)
+
+**Behavior:**
+- Can resend verification email
+- Auto-redirect after verification
+- Countdown timer before resend available
+
+---
+
+#### 9. Password Reset
+**Route:** `/reset-password`  
+**Query Params:** `?token=[reset-token]` (for step 2)  
+**Access:** Public  
+**Navigation From:** /login forgot password link, email link  
+**Navigation To:**
+- /login (After successful reset)
+
+**Behavior:**
+- Step 1: Enter email, send reset link
+- Step 2: Enter new password with token
+- Success → Redirect to /login with success message
+
+---
+
+### ONBOARDING FLOW
+
+#### 10. Welcome Tour
+**Route:** Modal overlay (no URL change)  
+**Access:** New users on first login  
+**Trigger:** Automatically on first visit to /feed  
+**Navigation:**
+- Overlays on top of /feed, /live, /portfolio
+- Changes underlying page without URL change
+- Progress saved to localStorage
+- Can resume from last stop
+- Skip button → Dismisses tour
+- Complete → Shows tier-specific upsell modal
+
+**Tour Progression:**
+```
+Stop 1: /feed highlight → Explain feed
+Stop 2: Navigate to /live → Explain streaming
+Stop 3: Navigate to /portfolio → Explain tracking
+Stop 4: Show upsell modal → Encourage upgrade
+```
+
+---
+
+### MAIN PLATFORM PAGES
+
+#### 11. Main Feed Page ⭐
+**Route:** `/feed`  
+**Access:** All tiers (Default landing after login)  
+**Query Params:**
+- `?filter=all|following|top-signals` (default: all)
+- `?search=[search-term]`
+
+**Navigation From:**
+- Default post-login
+- Sidebar "Feed" link
+- Logo click from any page
+- Mobile bottom nav
+
+**Navigation To:**
+- /feed/signal/:signalId (Click signal card)
+- /profile/:username (Click creator)
+- /live (Click "Go Live" on streamer)
+- /create-signal modal (Click "Create Signal" button - Grow+)
+
+**Behavior:**
+- Infinite scroll
+- Filter buttons update URL query params
+- Search updates ?search param
+- Refreshes on pull-down (mobile)
+- Real-time updates via WebSocket
+
+**Sub-route:**
+- `/feed/signal/:signalId` - Signal detail modal (desktop) or full page (mobile)
+
+---
+
+#### 12. Signal Detail View
+**Route:** `/feed/signal/:signalId`  
+**Access:** All tiers  
+**Navigation From:** Signal card clicks  
+**Navigation To:**
+- /profile/:username (Click creator avatar)
+- Back to /feed (Close button or back navigation)
+
+**Behavior:**
+- **Desktop:** Opens as modal overlay, URL changes but /feed stays visible underneath
+- **Mobile:** Full-page navigation
+- Share button copies full URL
+- Comments load incrementally
+- Real-time P/L updates
+
+---
+
+#### 13. Live Streams Hub
+**Route:** `/live`  
+**Access:** All tiers  
+**Navigation From:** Sidebar nav, mobile bottom nav  
+**Navigation To:**
+- /live/:streamId (Click stream card)
+- /live/start (Click "Go Live" - Elite+ only)
+
+**Query Params:**
+- `?filter=all|competitions|journals` (default: all)
+- `?search=[search-term]`
+
+**Behavior:**
+- Horizontal streamer carousel auto-scrolls
+- Grid view below carousel
+- Filter tabs update URL
+- "Go Live" button prominent for Elite+
+- "LIVE" badges pulse
+
+---
+
+#### 14. Individual Stream View ⭐
+**Route:** `/live/:streamId`  
+**Access:** All tiers (view), Host only (controls)  
+**Navigation From:** /live hub, notifications, profile streams  
+**Navigation To:**
+- Back to /live (Back button)
+- /profile/:username (Click streamer)
+- /live/settings/:streamId (Settings button - Host only)
+
+**Behavior:**
+- Fullscreen mode (press F or button)
+- Emoji reactions float up
+- Real-time chat and positions
+- Auto-quality adjustment
+- Picture-in-picture support
+- Leave confirmation if host
+
+**Sub-route:**
+- `/live/settings/:streamId` - Stream settings (host only, modal)
+
+---
+
+#### 15. Start Stream Setup
+**Route:** `/live/start`  
+**Access:** Elite+ only  
+**Navigation From:** /live hub "Go Live" button  
+**Navigation To:**
+- /live/:newStreamId (After starting stream)
+- /live (Cancel button)
+
+**Behavior:**
+- 3-step wizard (details → camera/mic → preview)
+- Progress indicator
+- Camera/mic permission requests
+- Preview before going live
+- Creates stream on final submit
+
+---
+
+#### 17. Portfolio Dashboard
+**Route:** `/portfolio`  
+**Access:** All tiers  
+**Navigation From:** Sidebar nav  
+**Navigation To:**
+- /portfolio/calendar (Click calendar widget - Grow+)
+- /portfolio/trades (Click trade log link)
+- /portfolio/trades/:tradeId (Click individual trade)
+- /settings/connections (Click "Connect Broker" - Grow+)
+
+**Query Params:**
+- `?date-from=[ISO-date]`
+- `?date-to=[ISO-date]`
+
+**Behavior:**
+- Date range picker updates query params
+- Metrics animate on first load
+- Real-time updates for Grow+ (API connected)
+- Manual entry for Free users
+
+---
+
+#### 18. Performance Calendar
+**Route:** `/portfolio/calendar`  
+**Access:** Grow+ only  
+**Navigation From:** /portfolio dashboard widget  
+**Navigation To:**
+- Back to /portfolio (Back button)
+- Day analysis modal (Click day cell)
+
+**Query Params:**
+- `?view=month|week|day` (default: month)
+- `?date=[ISO-date]` (selected date)
+
+**Behavior:**
+- View toggle buttons update URL
+- Click day → AI analysis modal
+- Color-coded profit/loss days
+- Hover shows tooltip with details
+
+---
+
+#### 19-20. Trade Log & Trade Detail
+**Routes:**
+- `/portfolio/trades` - Trade log list
+- `/portfolio/trades/:tradeId` - Individual trade detail
+
+**Access:** All tiers  
+**Navigation:** Standard list → detail pattern  
+**Behavior:**
+- Filterable and sortable
+- Pagination or infinite scroll
+- Export to CSV option
+
+---
+
+#### 21. Competitions Hub
+**Route:** `/competitions`  
+**Access:** All tiers  
+**Navigation From:** Sidebar nav  
+**Navigation To:**
+- /competitions/create (Click "Create" - Gladiator+)
+- /competitions/:competitionId (Click competition card)
+
+**Query Params:**
+- `?status=upcoming|active|completed`
+- `?type=1v1|team|ffa`
+- `?entry=free|paid`
+
+**Behavior:**
+- Filter tabs update URL
+- Featured carousel auto-rotates
+- "Create Competition" prominent for Gladiator+
+- Join buttons check eligibility
+
+---
+
+#### 22. Competition Detail
+**Route:** `/competitions/:competitionId`  
+**Access:** All tiers  
+**Navigation From:** /competitions hub  
+**Navigation To:**
+- /competitions/:competitionId/leaderboard (Tab click)
+- /competitions/:competitionId/results (After ended)
+- /profile/:username (Click participant)
+
+**Behavior:**
+- Tabbed interface (About | Leaderboard | Participants | Activity)
+- Join button checks eligibility + tier
+- Countdown timer for upcoming
+- "LIVE" indicator for active
+
+---
+
+#### 23. Live Leaderboard ⭐
+**Route:** `/competitions/:competitionId/leaderboard`  
+**Access:** All tiers  
+**Navigation From:** Competition detail page  
+**Navigation To:**
+- Back to /competitions/:competitionId
+- /profile/:username (Click trader row)
+
+**Behavior:**
+- Real-time updates (<2s)
+- Your position sticky card
+- Animated rank changes
+- Fullscreen mode available
+- Auto-refresh toggle
+
+---
+
+#### 24. Create Competition Wizard
+**Route:** `/competitions/create`  
+**Access:** Gladiator+ only  
+**Navigation From:** /competitions hub  
+**Navigation To:**
+- /competitions/:newCompetitionId (After creation)
+- /competitions (Cancel)
+
+**Behavior:**
+- 3-step wizard with progress
+- Type selection → Configuration → Review
+- Share modal on completion
+- Draft auto-save
+
+---
+
+#### 25. Competition Results
+**Route:** `/competitions/:competitionId/results`  
+**Access:** All tiers  
+**Navigation From:** Ended competitions  
+**Navigation To:** Back to competition detail
+
+**Behavior:**
+- Final frozen leaderboard
+- Prize distribution shown
+- Winner celebration animation
+- Download results option
+- Share victory button for winners
+
+---
+
+#### 26-28. Discover Section
+**Routes:**
+- `/discover` - Discover feed
+- `/discover/creators` - Creator directory
+- `/discover/signals` - Signal explorer
+
+**Access:** All tiers  
+**Query Params:** Extensive filtering options
+
+---
+
+#### 29. User Profile (Public View) ⭐
+**Route:** `/profile/:username`  
+**Access:** All tiers  
+**Navigation From:** Anywhere username/avatar appears  
+**Navigation To:**
+- /profile/edit (Edit button - own profile only)
+- /buddies/messages/:conversationId (Message button)
+- /competitions/:competitionId (Click trophy)
+- Feed tab signals (Click signal)
+
+**Behavior:**
+- Shows tier badge prominently
+- Tabbed content (Feed | Competitions | About | Videos)
+- Follow/Subscribe buttons
+- Share modal with social options
+- Activity heatmap interactive
+
+**Special Case:**
+- `/profile` (no username) → Redirects to /profile/:currentUsername
+
+---
+
+#### 30. Edit Profile
+**Route:** `/profile/edit`  
+**Access:** Own profile only  
+**Navigation From:** /profile/:username edit button  
+**Navigation To:** Back to /profile/:username
+
+**Behavior:**
+- Form with real-time save
+- Image upload with crop tool
+- Preview changes
+- Cancel returns to profile
+
+---
+
+#### 31-35. Social Section (Buddies)
+**Routes:**
+- `/buddies` - Buddies list
+- `/buddies/messages` - Messages inbox
+- `/buddies/messages/:conversationId` - Conversation thread
+- `/buddies/clans` - Clans list
+- `/buddies/watchlists` - Watchlists
+
+**Access:** All tiers  
+**Navigation:** Standard messaging patterns
+
+---
+
+#### 36. Global Leaderboards
+**Route:** `/leaderboards`  
+**Access:** All tiers  
+**Navigation From:** Sidebar nav  
+**Navigation To:** /profile/:username (Click any user)
+
+**Query Params:**
+- `?category=performance|influence|competition`
+- `?metric=pl|win-rate|followers`
+- `?timeframe=7d|30d|all-time`
+
+**Behavior:**
+- Tabbed interface
+- Sub-tabs per category
+- Your rank highlighted
+- Real-time updates
+- Scroll to your position
+
+---
+
+#### 37-38. Learning Hub (Grow+)
+**Routes:**
+- `/learning` - Q&A interface
+- `/learning/journal` - Saved concepts
+
+**Access:** Grow+ only  
+**Upgrade Prompt:** Shows for Free users
+
+---
+
+#### 39-46. Settings Hub
+**Route Pattern:** `/settings/*`  
+**Routes:**
+- `/settings` → Redirects to `/settings/profile`
+- `/settings/profile`
+- `/settings/subscription`
+- `/settings/theme`
+- `/settings/notifications`
+- `/settings/security`
+- `/settings/connections`
+- `/settings/creator` (Elite+ only)
+
+**Access:** All tiers (some pages restricted)  
+**Navigation:** 2-panel layout with side navigation
+
+---
+
+#### 47-52. Creator Dashboard (Elite+)
+**Route Pattern:** `/creator/*`  
+**Routes:**
+- `/creator` → Redirects to `/creator/dashboard`
+- `/creator/dashboard`
+- `/creator/analytics`
+- `/creator/content`
+- `/creator/subscribers`
+- `/creator/earnings`
+- `/creator/schedule`
+
+**Access:** Elite+ only  
+**Navigation:** Desktop-focused interface
+
+---
+
+### ERROR PAGES
+
+#### 404 Not Found
+**Route:** `*` (catch-all)  
+**Behavior:**
+- Shows friendly 404 page
+- Search bar to find content
+- Link back to /feed
+- Logs 404 for analytics
+
+#### 500 Server Error
+**Route:** N/A (rendered on error)  
+**Behavior:**
+- Generic error message
+- Try again button
+- Report issue link
+- Auto-retry after 5s
+
+#### Maintenance Mode
+**Route:** N/A (global overlay)  
+**Behavior:**
+- Full-page maintenance message
+- Countdown if scheduled
+- Status page link
+- Blocks all routes
+
+---
+
+## ðŸ"— DEEP LINKING & SHARING
+
+### Shareable URLs
+
+All pages support direct deep links with preserved state:
+
+```
+Examples:
+/feed/signal/abc123
+  → Opens specific signal (modal on desktop)
+
+/live/xyz789
+  → Joins specific stream
+
+/profile/trader_pro
+  → Shows specific user profile
+
+/competitions/btc-battle/leaderboard
+  → Shows leaderboard for specific competition
+
+/portfolio/trades/trade456
+  → Shows specific trade detail
+```
+
+### Share URL Generation
+
+When user clicks "Share" button:
+```
+1. Generate canonical URL (full path + query params)
+2. Add tracking params: ?utm_source=share&utm_medium=social
+3. Copy to clipboard
+4. Show success toast
+5. Optional: Open native share sheet (mobile)
+```
+
+---
+
+## ðŸ›¡ï¸ ROUTE PROTECTION RULES
+
+### Authentication Guard
+
+```
+Protected Routes (Require Login):
+- /feed/*
+- /live/*
+- /portfolio/*
+- /competitions/*
+- /discover/*
+- /profile/* (except public profiles)
+- /buddies/*
+- /leaderboards
+- /learning/*
+- /settings/*
+- /creator/*
+
+Redirect Pattern:
+  Unauthenticated user → /login?redirect=[attempted-url]
+  After login → Redirect to [attempted-url]
+```
+
+### Tier Access Guard
+
+```
+Tier-Restricted Routes:
+
+Grow+ Required:
+- /learning/*
+- /portfolio/calendar
+
+Elite+ Required:
+- /live/start
+- /creator/*
+- /settings/creator
+
+Gladiator+ Required:
+- /competitions/create
+
+Behavior if insufficient tier:
+- Show page with upgrade modal
+- Lock interactive features
+- Display tier badge requirement
+- "Upgrade Now" CTA
+```
+
+### Special Access Rules
+
+```
+Own Content Only:
+- /profile/edit (must be own profile)
+- /live/settings/:streamId (must be stream host)
+
+Relationship Required:
+- /buddies/messages/:conversationId (must be buddies)
+
+Competition Participation Required:
+- Some competition features only for participants
+```
+
+---
+
+## ðŸ"Š NAVIGATION ANALYTICS
+
+Track these events for optimization:
+
+```
+Page Views:
+- Route: URL path
+- Referrer: Previous page
+- User Tier: Free | Grow | Elite | Gladiator | Legend
+- Device: Desktop | Mobile | Tablet
+
+Navigation Events:
+- Navigation method: Sidebar | Bottom nav | Link click | Back button
+- Time on page: Duration before navigation
+- Scroll depth: How far user scrolled
+- Exit page: Where user left
+
+Conversion Paths:
+- Landing → Sign up conversion
+- Free → Paid upgrade path
+- Feature discovery: Time to first use of features
+
+Performance:
+- Page load time
+- Time to interactive
+- Navigation speed
+```
+
+---
+
+## ðŸŽ¯ IMPLEMENTATION CHECKLIST FOR DESIGNERS
+
+### For Each Route:
+- [ ] URL pattern documented
+- [ ] Access control specified
+- [ ] Navigation from/to mapped
+- [ ] Query parameters defined
+- [ ] Mobile vs desktop behavior noted
+- [ ] Loading states designed
+- [ ] Error states designed
+- [ ] Empty states designed
+- [ ] Locked state for tier restrictions
+
+### Navigation Elements:
+- [ ] Active state indicators
+- [ ] Hover states
+- [ ] Loading spinners during navigation
+- [ ] Breadcrumbs where needed
+- [ ] Back button behavior
+- [ ] Logo always links to /feed
+- [ ] Mobile gestures documented
+
+### Special Cases:
+- [ ] Modal vs full-page decision made
+- [ ] Deep link handling designed
+- [ ] Share functionality integrated
+- [ ] Search with URL params
+- [ ] Filter persistence in URL
+
+---
+
+This completes the routing architecture specification. Every designer on your team now knows exactly how to implement navigation, what routes exist, and how they connect together.# TradoSphere: Complete Enhanced UI Documentation
+*For UI/UX Designers - Complete Figma Design Specification with Routing*
+
+**Version:** 2.0 (Enhanced with Routing)  
+**Date:** January 20, 2025  
+**Status:** Production Ready
+
+---
+
+## ðŸ"‹ Document Purpose
+
+This document provides **complete specifications** for designing all **47 unique pages** in TradoSphere with maximum immersion, gamification, and visual polish. Each page includes:
+- Route/URL path
+- Navigation structure
+- Detailed layouts and components
+- Enhanced visual effects and animations
+- Gamification elements
+- Micro-interactions
+- Responsive considerations
+- Tier-specific features
+
+**Design Goal:** Create an app so visually engaging that traders don't want to leave.
+
+**Design Tool**: Figma  
+**Design Systems**: Dark theme (primary), Light theme (secondary), Terminal theme (optional)  
+**Component Library**: shadcn/ui base + custom enhanced components
+
+---
+
+## ðŸ—ºï¸ COMPLETE ROUTING STRUCTURE
+
+### Route Hierarchy
+
+```
+/ (Public Root)
+â"‚
+â"œâ"€â"€ /pricing
+â"œâ"€â"€ /about
+â"œâ"€â"€ /faq
+â"œâ"€â"€ /legal
+â"‚   â"œâ"€â"€ /legal/terms
+â"‚   â"œâ"€â"€ /legal/privacy
+â"‚   â""â"€â"€ /legal/disclaimer
+â"‚
+â"œâ"€â"€ /login
+â"œâ"€â"€ /signup
+â"œâ"€â"€ /verify-email
+â"œâ"€â"€ /reset-password
+â"‚
+â""â"€â"€ (Authenticated Routes - Require Login)
+    â"‚
+    â"œâ"€â"€ /feed (Default landing after login)
+    â"‚   â""â"€â"€ /feed/signal/:signalId
+    â"‚
+    â"œâ"€â"€ /live
+    â"‚   â"œâ"€â"€ /live/:streamId
+    â"‚   â"œâ"€â"€ /live/start (Elite+)
+    â"‚   â""â"€â"€ /live/settings/:streamId
+    â"‚
+    â"œâ"€â"€ /portfolio
+    â"‚   â"œâ"€â"€ /portfolio/calendar (Grow+)
+    â"‚   â"œâ"€â"€ /portfolio/trades
+    â"‚   â""â"€â"€ /portfolio/trades/:tradeId
+    â"‚
+    â"œâ"€â"€ /competitions
+    â"‚   â"œâ"€â"€ /competitions/:competitionId
+    â"‚   â"œâ"€â"€ /competitions/:competitionId/leaderboard
+    â"‚   â"œâ"€â"€ /competitions/:competitionId/results
+    â"‚   â""â"€â"€ /competitions/create (Gladiator+)
+    â"‚
+    â"œâ"€â"€ /discover
+    â"‚   â"œâ"€â"€ /discover/creators
+    â"‚   â""â"€â"€ /discover/signals
+    â"‚
+    â"œâ"€â"€ /profile
+    â"‚   â"œâ"€â"€ /profile/:username
+    â"‚   â""â"€â"€ /profile/edit
+    â"‚
+    â"œâ"€â"€ /buddies
+    â"‚   â"œâ"€â"€ /buddies/messages
+    â"‚   â"œâ"€â"€ /buddies/messages/:conversationId
+    â"‚   â"œâ"€â"€ /buddies/clans
+    â"‚   â""â"€â"€ /buddies/watchlists
+    â"‚
+    â"œâ"€â"€ /leaderboards
+    â"‚
+    â"œâ"€â"€ /learning (Grow+)
+    â"‚   â""â"€â"€ /learning/journal
+    â"‚
+    â"œâ"€â"€ /settings
+    â"‚   â"œâ"€â"€ /settings/profile
+    â"‚   â"œâ"€â"€ /settings/subscription
+    â"‚   â"œâ"€â"€ /settings/theme
+    â"‚   â"œâ"€â"€ /settings/notifications
+    â"‚   â"œâ"€â"€ /settings/security
+    â"‚   â"œâ"€â"€ /settings/connections
+    â"‚   â""â"€â"€ /settings/creator (Elite+)
+    â"‚
+    â"œâ"€â"€ /creator (Elite+)
+    â"‚   â"œâ"€â"€ /creator/dashboard
+    â"‚   â"œâ"€â"€ /creator/analytics
+    â"‚   â"œâ"€â"€ /creator/content
+    â"‚   â"œâ"€â"€ /creator/subscribers
+    â"‚   â"œâ"€â"€ /creator/earnings
+    â"‚   â""â"€â"€ /creator/schedule
+    â"‚
+    â""â"€â"€ (Error Pages)
+        â"œâ"€â"€ /404
+        â"œâ"€â"€ /500
+        â""â"€â"€ /maintenance
+```
+
+---
+
+## ðŸ§­ NAVIGATION PATTERNS
+
+### Primary Navigation (Desktop - Sidebar)
+
+**Location:** Left sidebar (collapsible)
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ [Logo]             â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ  Feed            â"‚ â†' /feed
+â"‚ ðŸ"º Live            â"‚ â†' /live
+â"‚ ðŸ'¼ Portfolio       â"‚ â†' /portfolio
+â"‚ ðŸ† Competitions    â"‚ â†' /competitions
+â"‚ ðŸ" Discover        â"‚ â†' /discover
+â"‚ ðŸ'¬ Buddies        â"‚ â†' /buddies
+â"‚ ðŸ"ˆ Leaderboards   â"‚ â†' /leaderboards
+â"‚ ðŸ"š Learning (Grow+)â"‚ â†' /learning
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [User Avatar]      â"‚ â†' /profile/[username]
+â"‚ âš™ï¸ Settings        â"‚ â†' /settings
+â"‚ ðŸš€ Logout          â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Active State:** Glowing icon + highlighted background
+**Keyboard Shortcut:** G + [first letter] (e.g., G + F = Feed)
+
+### Mobile Navigation (Bottom Bar)
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â# TradoSphere: Complete Enhanced UI Documentation
+*For UI/UX Designers - Complete Figma Design Specification*
+
+**Version:** 2.0 (Enhanced)  
+**Date:** January 20, 2025  
+**Status:** Production Ready
+
+---
+
+## ðŸ"‹ Document Purpose
+
+This document provides **complete specifications** for designing all **47 unique pages** in TradoSphere with maximum immersion, gamification, and visual polish. Each page includes:
+- Detailed layouts and components
+- Enhanced visual effects and animations
+- Gamification elements
+- Micro-interactions
+- Responsive considerations
+- Tier-specific features
+
+**Design Goal:** Create an app so visually engaging that traders don't want to leave.
+
+**Design Tool**: Figma  
+**Design Systems**: Dark theme (primary), Light theme (secondary), Terminal theme (optional)  
+**Component Library**: shadcn/ui base + custom enhanced components
+
+---
+
+## ðŸ—ºï¸ Page Hierarchy & Navigation Structure
+
+```
+TradoSphere (47 Total Pages)
+â"‚
+â"œâ"€â"€ ðŸ"± Public Pages (5 pages)
+â"‚   â"œâ"€â"€ Landing Page ⭐
+â"‚   â"œâ"€â"€ Pricing Page
+â"‚   â"œâ"€â"€ About Page
+â"‚   â"œâ"€â"€ FAQ Page
+â"‚   â""â"€â"€ Legal Pages (3)
+â"‚
+â"œâ"€â"€ ðŸ" Authentication Flow (4 pages)
+â"‚   â"œâ"€â"€ Login
+â"‚   â"œâ"€â"€ Sign Up
+â"‚   â"œâ"€â"€ Email Verification
+â"‚   â""â"€â"€ Password Reset
+â"‚
+â"œâ"€â"€ ðŸŽ" Onboarding Flow (Interactive Tour)
+â"‚   â""â"€â"€ Welcome Tour (4-11 stops, tier-aware)
+â"‚
+â"œâ"€â"€ ðŸ  Main Platform
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ"Š Feed Section (2 pages) ⭐
+â"‚   â"‚   â"œâ"€â"€ Main Feed
+â"‚   â"‚   â""â"€â"€ Signal Detail View
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ"º Live Section (4 pages) ⭐
+â"‚   â"‚   â"œâ"€â"€ Live Streams Hub
+â"‚   â"‚   â"œâ"€â"€ Individual Stream View
+â"‚   â"‚   â"œâ"€â"€ Start Stream Setup
+â"‚   â"‚   â""â"€â"€ Stream Settings
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ'¼ Portfolio Section (4 pages)
+â"‚   â"‚   â"œâ"€â"€ Portfolio Dashboard
+â"‚   â"‚   â"œâ"€â"€ Performance Calendar
+â"‚   â"‚   â"œâ"€â"€ Trade Log
+â"‚   â"‚   â""â"€â"€ Trade Detail View
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ† Competitions Section (5 pages)
+â"‚   â"‚   â"œâ"€â"€ Competitions Hub
+â"‚   â"‚   â"œâ"€â"€ Competition Detail
+â"‚   â"‚   â"œâ"€â"€ Live Leaderboard ⭐
+â"‚   â"‚   â"œâ"€â"€ Create Competition (Wizard)
+â"‚   â"‚   â""â"€â"€ Competition Results
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ" Discover Section (3 pages)
+â"‚   â"‚   â"œâ"€â"€ Discover Feed
+â"‚   â"‚   â"œâ"€â"€ Creator Directory
+â"‚   â"‚   â""â"€â"€ Signal Explorer
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ'¤ Profile Section (2 pages)
+â"‚   â"‚   â"œâ"€â"€ User Profile (Public) ⭐
+â"‚   â"‚   â""â"€â"€ Edit Profile
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ'¬ Social Section (5 pages)
+â"‚   â"‚   â"œâ"€â"€ Buddies List
+â"‚   â"‚   â"œâ"€â"€ Messages Inbox
+â"‚   â"‚   â"œâ"€â"€ Conversation Thread
+â"‚   â"‚   â"œâ"€â"€ Clans List
+â"‚   â"‚   â""â"€â"€ Watchlists
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ"ˆ Leaderboards (1 page)
+â"‚   â"‚   â""â"€â"€ Global Leaderboards
+â"‚   â"‚
+â"‚   â"œâ"€â"€ ðŸ"š Learning Hub (2 pages)
+â"‚   â"‚   â"œâ"€â"€ Learning Hub Q&A
+â"‚   â"‚   â""â"€â"€ Saved Concepts
+â"‚   â"‚
+â"‚   â"œâ"€â"€ âš™ï¸ Settings Hub (8 pages)
+â"‚   â"‚   â"œâ"€â"€ Profile Settings
+â"‚   â"‚   â"œâ"€â"€ Subscription Management
+â"‚   â"‚   â"œâ"€â"€ Theme Customization
+â"‚   â"‚   â"œâ"€â"€ Notifications
+â"‚   â"‚   â"œâ"€â"€ Security (2FA)
+â"‚   â"‚   â"œâ"€â"€ Connections (Broker API)
+â"‚   â"‚   â""â"€â"€ Creator Settings (Elite+)
+â"‚   â"‚
+â"‚   â""â"€â"€ ðŸŽ¨ Creator Dashboard (6 pages - Elite+ Only)
+â"‚       â"œâ"€â"€ Creator Overview
+â"‚       â"œâ"€â"€ Analytics Deep Dive
+â"‚       â"œâ"€â"€ Content Manager
+â"‚       â"œâ"€â"€ Subscriber CRM
+â"‚       â"œâ"€â"€ Earnings Dashboard
+â"‚       â""â"€â"€ Content Scheduler
+â"‚
+â""â"€â"€ ðŸš¨ Special Pages (3)
+    â"œâ"€â"€ 404 Not Found
+    â"œâ"€â"€ 500 Server Error
+    â""â"€â"€ Maintenance Mode
+```
+
+⭐ = Highest priority for visual polish
+
+---
+
+## ðŸŽ¨ ENHANCED DESIGN SYSTEM
+
+### Color Palette
+
+```scss
+// Main Colors with Gradients
+$profit: #00D97E;        
+$profit-gradient: linear-gradient(135deg, #00D97E 0%, #00F5A0 100%);
+$profit-glow: 0 0 30px rgba(0, 217, 126, 0.5);
+
+$loss: #FF3B30;          
+$loss-gradient: linear-gradient(135deg, #FF3B30 0%, #FF6B6B 100%);
+$loss-glow: 0 0 30px rgba(255, 59, 48, 0.5);
+
+$primary: #007AFF;       
+$primary-gradient: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
+
+$warning: #FFB800;       
+$warning-gradient: linear-gradient(135deg, #FFB800 0%, #FFD700 100%);
+
+// Backgrounds (Dark Theme - Default) with Depth
+$bg-dark: #0A0E27;       // Main background
+$bg-darker: #060818;     // Deeper sections
+$bg-elevated: #141B3A;   // Cards, modals
+$bg-glass: rgba(20, 27, 58, 0.8); // Glassmorphism
+$bg-gradient: radial-gradient(ellipse at top, #1a1f3a 0%, #0A0E27 50%);
+
+// Tier Colors with Vibrant Gradients
+$tier-free: #6B7280;     
+$tier-free-gradient: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+
+$tier-grow: #10B981;     
+$tier-grow-gradient: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+$tier-grow-glow: 0 0 40px rgba(16, 185, 129, 0.6);
+
+$tier-elite: #8B5CF6;    
+$tier-elite-gradient: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+$tier-elite-glow: 0 0 40px rgba(139, 92, 246, 0.6);
+
+$tier-gladiator: #F59E0B; 
+$tier-gladiator-gradient: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+$tier-gladiator-glow: 0 0 40px rgba(245, 158, 11, 0.6);
+
+$tier-legend: #EF4444;   
+$tier-legend-gradient: linear-gradient(135deg, #EF4444 0%, #F59E0B 50%, #FFD700 100%);
+$tier-legend-glow: 0 0 50px rgba(239, 68, 68, 0.8);
+$tier-legend-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+
+// Text with Effects
+$text-primary: #FFFFFF;
+$text-secondary: #9CA3AF;
+$text-tertiary: #6B7280;
+$text-glow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+// Borders with Glow
+$border-default: #374151;
+$border-hover: #4B5563;
+$border-active: #60A5FA;
+$border-glow: 0 0 15px rgba(96, 165, 250, 0.5);
+```
+
+### Typography
+
+```scss
+// Font Families
+$font-heading: 'Inter', sans-serif;
+$font-body: 'Inter', sans-serif;
+$font-mono: 'JetBrains Mono', monospace; // For prices/numbers
+
+// Font Sizes
+$text-xs: 12px;
+$text-sm: 14px;
+$text-base: 16px;
+$text-lg: 18px;
+$text-xl: 20px;
+$text-2xl: 24px;
+$text-3xl: 30px;
+$text-4xl: 36px;
+$text-5xl: 48px;
+
+// Font Weights
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-black: 900;
+```
+
+### Spacing System
+
+Base unit: **8px**
+
+```scss
+$space-0: 0;
+$space-1: 8px;   // 0.5rem
+$space-2: 16px;  // 1rem
+$space-3: 24px;  // 1.5rem
+$space-4: 32px;  // 2rem
+$space-5: 40px;  // 2.5rem
+$space-6: 48px;  // 3rem
+$space-8: 64px;  // 4rem
+$space-10: 80px; // 5rem
+$space-12: 96px; // 6rem
+```
+
+### Border Radius
+
+```scss
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-2xl: 24px;
+$radius-full: 9999px; // Circular
+```
+
+### Shadows & Elevation
+
+```scss
+$shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+$shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+$shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+$shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+$shadow-2xl: 0 25px 50px rgba(0,0,0,0.25);
+
+// Elevation System (Layered Depth)
+$elevation-1: 0 2px 8px rgba(0,0,0,0.15);
+$elevation-2: 0 4px 16px rgba(0,0,0,0.2);
+$elevation-3: 0 8px 24px rgba(0,0,0,0.25);
+$elevation-4: 0 16px 48px rgba(0,0,0,0.3);
+
+// Special effects
+$glow-profit: 0 0 20px rgba(0,217,126,0.3), 0 0 40px rgba(0,217,126,0.1);
+$glow-loss: 0 0 20px rgba(255,59,48,0.3), 0 0 40px rgba(255,59,48,0.1);
+$glow-legendary: 0 0 30px rgba(239,68,68,0.4), 0 0 60px rgba(245,158,11,0.3);
+
+// Glassmorphism
+$glass-light: rgba(255, 255, 255, 0.05);
+$glass-border: rgba(255, 255, 255, 0.1);
+$glass-blur: blur(20px);
+```
+
+### Animation Presets
+
+```scss
+// Timing Functions
+$ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+// Durations
+$duration-instant: 100ms;
+$duration-fast: 200ms;
+$duration-normal: 300ms;
+$duration-slow: 500ms;
+$duration-slower: 800ms;
+
+// Keyframe Animations
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: $glow-profit; }
+  50% { box-shadow: 0 0 40px rgba(0,217,126,0.6), 0 0 80px rgba(0,217,126,0.2); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes celebration-burst {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  100% { transform: scale(2) rotate(360deg); opacity: 0; }
+}
+
+@keyframes streak-fire {
+  0%, 100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes slide-in-right {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+```
+
+### Breakpoints
+
+```scss
+$mobile: 375px;    // Mobile S
+$mobile-l: 425px;  // Mobile L
+$tablet: 768px;    // Tablet
+$desktop: 1024px;  // Desktop
+$desktop-l: 1440px; // Desktop L
+$desktop-xl: 1920px; // Desktop XL
+```
+
+---
+
+## ðŸŽ® GAMIFICATION SYSTEM
+
+### Real-Time Activity Feed (Global Widget)
+
+**Location**: Collapsible sidebar on all main pages
+
+**Purpose**: Create FOMO and social proof through live activity
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ ðŸ"¥ LIVE ACTIVITY         â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ âœ¨ @trader_pro just      â"‚
+â"‚    hit a 5x signal!       â"‚
+â"‚    [2s ago]               â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ† 3 new Legends this    â"‚
+â"‚    week!                  â"‚
+â"‚    [1m ago]               â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ"º @crypto_queen is     â"‚
+â"‚    live streaming now!    â"‚
+â"‚    [Join] [5m ago]        â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Features**:
+- Auto-scrolling with smooth transitions
+- Gradient fade at bottom
+- Pulsing indicator for live events
+- Clickable to navigate
+- Glassmorphism background
+- New items glow for 5s
+
+**Activity Types**:
+- Signal hits/misses with profit amounts
+- Competition winners
+- Streamers going live
+- Achievement unlocks
+- Tier upgrades
+- Win streaks starting
+- Record-breaking trades
+
+### Achievement & Badge System
+
+**Achievement Unlock Animation**:
+1. Screen dims (dark overlay 80%)
+2. Badge icon scales from 0 to 1.2x with elastic bounce
+3. Particle burst in tier color
+4. Sound effect (optional)
+5. Achievement name fades in
+6. Tier points earned roll up
+7. "Share" and "Continue" buttons appear
+8. Confetti rains for Legendary achievements
+
+**Badge Categories**:
+- **Progression**: "First Hit," "10th Signal," "First Follower"
+- **Skill**: "Bullseye" (5 consecutive hits), "Sharpshooter," "Visionary"
+- **Community**: "Mentor," "Patron," "Influencer"
+- **Special**: Founder badge, Event badges
+
+### Tier Progression System
+
+**Header Progress Bar** (All pages):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ TS Grow ðŸŒ± Level 12          [â– â– â– â– â– â– â–¡â–¡â–¡â–¡] 67% to Lvl 13 â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+- Smooth fill animation on XP gain
+- Sparkle effect when leveling up
+- Collapsible for minimal view
+- Click to see detailed progression
+
+### Win Streak System
+
+**Visual Effects**:
+- **3 wins**: Green glow on profile
+- **5 wins**: ðŸ"¥ Fire badge appears with animation
+- **10 wins**: Screen-wide celebration + sound
+- **20 wins**: Legendary notification to all users
+- **50 wins**: Custom animated badge + Hall of Fame
+
+**Fire Animation**:
+- Flickering flame particles
+- Animated on signal cards
+- Profile banner gets fire border
+- Real-time counter in header
+
+---
+
+## ðŸ"„ DETAILED PAGE SPECIFICATIONS
+
+### ðŸŒ PUBLIC PAGES
+
+#### 1. Landing Page ⭐
+
+**Route**: `/`  
+**Access**: Public  
+**Purpose**: Marketing, conversion with maximum visual impact
+
+**Hero Section** (Full-screen, cinematic):
+
+**Background**:
+- Animated gradient mesh (subtle mouse movement)
+- Floating trading card particles (blurred depth)
+- Parallax layers for 3D effect
+- Dynamic color shifts
+
+**Content**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚                                                      â"‚
+â"‚   Trade Smarter. Learn Faster. Compete Better.     â"‚
+â"‚   (Gradient text with shimmer animation)            â"‚
+â"‚                                                      â"‚
+â"‚   Social trading platform with verified traders     â"‚
+â"‚   (Glow effect, fade in after headline)             â"‚
+â"‚                                                      â"‚
+â"‚   [Start Free âž¡ï¸]  [Watch Demo ðŸŽ¥]                â"‚
+â"‚   (Gradient + glow)  (Ghost button)                 â"‚
+â"‚                                                      â"‚
+â"‚   [Animated Dashboard Preview]                      â"‚
+â"‚   (3D perspective tilt on mouse move)               â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Animations**:
+- Headline: Typewriter effect on first load
+- CTA buttons: Pulse every 3s, glow on hover
+- Hero visual: Floating signal cards with live animations
+- Scroll indicator: Bouncing arrow
+
+**Social Proof Section**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  ðŸ'¥ 50,000+ Traders  |  ðŸ"Š 1M+ Signals  |  ðŸ† $10M+ Won â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+- Numbers roll up from 0 on scroll
+- Pulse animation on icons
+- Trust badges with verified checks
+
+**Features Showcase** (3 columns):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ âœ¨ Learn from    â"‚ â"‚ ðŸ"º Live Trading â"‚ â"‚ ðŸ† Compete &   â"‚
+â"‚    the Best      â"‚ â"‚    Streams       â"‚ â"‚    Earn         â"‚
+â"‚                  â"‚ â"‚                  â"‚ â"‚                 â"‚
+â"‚ [Animated Icon]  â"‚ â"‚ [Video Preview]  â"‚ â"‚ [Trophy Icon]   â"‚
+â"‚                  â"‚ â"‚                  â"‚ â"‚                 â"‚
+â"‚ Follow verified  â"‚ â"‚ Watch experts    â"‚ â"‚ Join tournaments â"‚
+â"‚ profitable       â"‚ â"‚ analyze markets  â"‚ â"‚ and win prizes  â"‚
+â"‚ traders          â"‚ â"‚ in real-time     â"‚ â"‚                 â"‚
+â"‚                  â"‚ â"‚                  â"‚ â"‚                 â"‚
+â"‚ [Learn More â†']  â"‚ â"‚ [Watch Live â†']  â"‚ â"‚ [Join Now â†']   â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"  â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"  â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+```
+
+**Card Features**:
+- Glassmorphism background with blur
+- Gradient border in feature color
+- Lottie animated icons (smooth loops)
+- Hover: Lift effect + glow intensifies
+- Click: Smooth scroll to detailed section
+
+**Creator Spotlight Section**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  ðŸŽ¨ Become a Creator                           â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚                                                â"‚
+â"‚  [Top 9 Creator Avatars in Grid]               â"‚
+â"‚  (Hover shows monthly earnings)                â"‚
+â"‚                                                â"‚
+â"‚  ðŸ'° Earn from subscribers                      â"‚
+â"‚  ðŸ"º Host live streams                           â"‚
+â"‚  ðŸ† Win competitions                            â"‚
+â"‚                                                â"‚
+â"‚  Average Creator Earnings: $487/month          â"‚
+â"‚  (Animated counter on scroll)                  â"‚
+â"‚                                                â"‚
+â"‚  [Start Earning â†']                             â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Final CTA Section**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  Ready to Start?                      â"‚
+â"‚                                        â"‚
+â"‚  [Email Input]      [Sign Up â†']      â"‚
+â"‚                                        â"‚
+â"‚  âœ… Free forever                       â"‚
+â"‚  âœ… No credit card required            â"‚
+â"‚  âœ… 2-minute setup                     â"‚
+â"‚                                        â"‚
+â"‚  Join 1,234 traders this week          â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Design Priority**: HIGHEST  
+**Mobile**: CRITICAL  
+**Animations**: Rich throughout
+
+---
+
+#### 2. Pricing Page
+
+**Route**: `/pricing`  
+**Access**: Public  
+**Purpose**: Tier comparison with visual hierarchy
+
+**Layout**: Pricing cards with Legend callout
+
+**5 Tier Cards**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"  â"Œâ"€â"€â"€â"€â"€â"€â"€â"
+â"‚ Free   â"‚ â"‚TS Grow â"‚ â"‚TS Elite â"‚ â"‚Gladiatorâ"‚ â"‚ Legend â"‚
+â"‚        â"‚ â"‚  ðŸŒ±    â"‚ â"‚  âœ¨     â"‚ â"‚   âš"ï¸    â"‚ â"‚  ðŸ†    â"‚
+â"‚  $0    â"‚ â"‚  $5/mo â"‚ â"‚ $10/mo  â"‚ â"‚ $15/mo  â"‚ â"‚ $15/mo â"‚
+â"‚        â"‚ â"‚        â"‚ â"‚ POPULAR â"‚ â"‚         â"‚ â"‚ EARNED â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Card Design**:
+- Glassmorphism background
+- Tier-specific gradient border with glow
+- Badge icon with animation
+- "Popular" badge pulses on Elite card
+- "Earned" badge on Legend shimmers
+- Feature list with animated checkmarks
+- CTA button with gradient
+
+**Elite Card** (Most prominent):
+- Slightly larger scale (1.05x)
+- Stronger glow
+- "Most Popular" badge at top
+- Recommended indicator
+
+**Legend Card** (Special):
+- Golden shimmer animation
+- "Must Win Tournament" badge
+- Unique particle effects
+- "Learn More" instead of "Buy Now"
+
+**Design Priority**: HIGH  
+**Mobile**: Important (stack vertically)
+
+---
+
+#### 3-5. About, FAQ, Legal Pages
+
+**Design Priority**: MEDIUM-LOW  
+Standard content pages with TradoSphere styling
+
+---
+
+### ðŸ" AUTHENTICATION PAGES
+
+#### 6. Login Page
+
+**Route**: `/login`  
+**Access**: Public
+
+**Layout**: Centered card (max-width: 400px)
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚         [TradoSphere Logo]          â"‚
+â"‚                                      â"‚
+â"‚         Welcome Back                â"‚
+â"‚                                      â"‚
+â"‚  [Email Input]                      â"‚
+â"‚  [Password Input]                   â"‚
+â"‚                                      â"‚
+â"‚  [âœ"] Remember me                    â"‚
+â"‚  [Forgot password?]                 â"‚
+â"‚                                      â"‚
+â"‚  [Login Button - Full Width]        â"‚
+â"‚                                      â"‚
+â"‚  ───── or continue with ─────       â"‚
+â"‚                                      â"‚
+â"‚  [Google] [Twitter]                 â"‚
+â"‚                                      â"‚
+â"‚  Don't have an account? Sign up     â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Features**:
+- Glassmorphism card
+- Input focus: Border glows
+- Login button: Gradient with hover effect
+- OAuth buttons: Brand colors
+- Loading state: Button shows spinner
+- Error state: Shake animation + red glow
+- Success: Checkmark + navigate
+
+**Design Priority**: HIGH  
+**Mobile**: CRITICAL
+
+---
+
+#### 7. Sign Up Page
+
+**Route**: `/signup`  
+**Access**: Public
+
+Similar to login but includes:
+- Username field
+- Password strength indicator (4 levels with colors)
+- Terms checkbox
+- More prominent "Start Free" messaging
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  Password Strength:                 â"‚
+â"‚  [â– â– â– â–¡] Strong                   â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Design Priority**: HIGH  
+**Mobile**: CRITICAL
+
+---
+
+### ðŸŽ" ONBOARDING FLOW
+
+#### 10. Welcome Tour (Sphirie Guided)
+
+**Route**: Modal overlay on first login  
+**Access**: New users
+
+**Design**: Dark overlay (80% opacity) with spotlight effect
+
+**Tour Stop Template**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  [Sphirie Avatar âœ¨]                 â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚  This is your Feed...               â"‚
+â"‚                                      â"‚
+â"‚  Here you'll see signals from       â"‚
+â"‚  traders you follow!                â"‚
+â"‚                                      â"‚
+â"‚  [1/4]                               â"‚
+â"‚                                      â"‚
+â"‚  [Skip Tour]  [Next â†']              â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Features**:
+- Spotlight effect on highlighted area
+- Glassmorphism dialog
+- Sphirie avatar animates (subtle)
+- Progress dots (1/4, 2/4, etc.)
+- Smooth transitions between stops
+- Skip option always visible
+
+**Tour Stops** (Tier-aware):
+- **All Users**: Feed → Live → Portfolio → Upsell
+- **Grow+**: Add Learning Hub, Broker Connection
+- **Elite+**: Add Signal Posting, Go Live
+
+**Design Priority**: HIGH (First impression)  
+**Mobile**: CRITICAL
+
+---
+
+### ðŸ  MAIN PLATFORM PAGES
+
+#### 11. Main Feed Page ⭐
+
+**Route**: `/feed`  
+**Access**: All tiers  
+**Purpose**: Core social trading experience
+
+**Layout**: 2-column desktop, 1-column mobile
+
+**Header Bar**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [Create Signal âž•] [All] [Following] [Top]  [Search đŸ"...]â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Left Column (70%): Main Feed**
+
+**Enhanced Signal Card**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ [Avatar] Creator Name    [âœ¨ TS Elite]      â"‚
+â"‚ @username Â· 2h ago    [ðŸ"¥ Streak: 5]      â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ BTC/USD Â· LONG    [Live: $50,123 ↗]     â"‚
+â"‚ Entry: $50,000 | Target: $52,000        â"‚
+â"‚ Stop: $48,500 | R:R 3.0:1                â"‚
+â"‚ [Progress Ring: 23% to target]          â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [TradingView Chart - 300px]             â"‚
+â"‚ - AI-drawn levels glow                  â"‚
+â"‚ - Live price line animates              â"‚
+â"‚ - Drawing tools available               â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ "Strong support at 50k level..."        â"‚
+â"‚ [Read More] (expands smoothly)          â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [HIT âœ…] +$2,340 (+4.68%)                â"‚
+â"‚ (Animated reveal with confetti)         â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ ðŸ' 1.2K Â· ðŸ'¬ 45 Â· [Like] [Share] [Save] â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Card States & Animations**:
+
+**Active Signal**:
+- Subtle breathing border (2s cycle)
+- Progress ring updates smoothly
+- Live price ticker
+- Glassmorphism background
+
+**Hit Signal** (Victory State):
+1. Card transitions to profit gradient (1s)
+2. Green glow pulses outward (3x)
+3. Confetti burst from badge
+4. "HIT" badge slides from right (spring)
+5. Profit counter rolls up
+6. Success sound (optional)
+7. Share prompt appears
+8. Card glows for 24 hours
+
+**Miss Signal**:
+1. Card dims with red tint
+2. Red glow pulse (2x)
+3. "MISS" badge fades in
+4. Gentle shake
+5. "Learn More" button
+6. Returns to neutral after 1h
+
+**Hover State**:
+- Card lifts (-4px)
+- Shadow intensifies
+- Border brightens
+
+**Right Sidebar (30%): Widgets**
+
+**1. Live Activity Feed**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ ðŸ"¥ LIVE ACTIVITY         â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [Real-time events scroll] â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**2. Asset Scanner**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ [Crypto] [Futures] [Forex]â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ BTC $50,234 ↗ [sparkline]â"‚
+â"‚ ETH $2,987 ↘ [sparkline] â"‚
+â"‚ ...                       â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**3. Trending Creators**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ ⭐ TRENDING              â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [Avatar] @trader [Follow]â"‚
+â"‚ ...                      â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Design Priority**: HIGHEST  
+**Mobile**: CRITICAL  
+**Performance**: 60fps mandatory
+
+---
+
+#### 14. Individual Stream View ⭐
+
+**Route**: `/live/[streamId]`  
+**Access**: All tiers  
+**Purpose**: Maximum immersion live streaming
+
+**Layout**: Revolutionary 3-section command center
+
+**Top Bar** (Collapsible):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [←] Stream Title | @Creator âœ¨ | ðŸ'¥ 1,234 | [⛶]   â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Main Layout**:
+
+**Left: Collapsible Sidebar** (20%):
+- Platform navigation
+- Smooth collapse animation
+- Icon-only mode
+
+**Center: Video & Charts** (60%):
+
+**Video Section** (40% height):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [Live Stream Video]              â"‚
+â"‚                                   â"‚
+â"‚ [Emoji reactions floating up]    â"‚
+â"‚ [Viewer avatars at bottom]       â"‚
+â"‚                                   â"‚
+â"‚ [ðŸ˜€ ðŸ"¥ ðŸ' ðŸ'Ž ðŸš€] (emoji buttons)  â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Emoji Theater**:
+- Click emoji → floats up with physics
+- Same emojis cluster and merge
+- Combo effects (ðŸ"¥x3 = fire trail)
+- Sound per emoji (optional)
+
+**Chart Section** (60% height):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [Multi-chart â–¼] [Layout Presets]â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [1m Chart] [5m Chart] [15m Chart]â"‚
+â"‚ (Synchronized crosshair)         â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Right: Info Panels** (20%):
+
+**Tab 1: Live Positions**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ ðŸ"ˆ LIVE POSITIONS (3)    â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ BTC/USD LONG            â"‚
+â"‚ Entry: $50,000          â"‚
+â"‚ Current: $50,234 â†'      â"‚
+â"‚ P/L: +$234 (+0.47%)     â"‚
+â"‚ [Analyze âœ¨]             â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ (Real-time updates <1s) â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Tab 2: Live Chat**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ ðŸ'¬ CHAT [âœ¨ Summarize]  â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ @user1: Great! ðŸ"¥      â"‚
+â"‚ @user2: Target hit? âœ¨  â"‚
+â"‚ ...                     â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚ [Type...] [ðŸ˜€]          â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Fullscreen Mode**:
+- Hides everything except video/charts/chat
+- Keyboard: F to toggle
+- Overlay UI (auto-hides after 3s)
+- Glassmorphism controls
+
+**Design Priority**: HIGHEST  
+**Mobile**: Different layout (vertical stack)  
+**Performance**: 60fps with real-time updates
+
+---
+
+#### 23. Live Leaderboard ⭐
+
+**Route**: `/competitions/[id]/leaderboard`  
+**Access**: All tiers  
+**Purpose**: Competitive arena with maximum excitement
+
+**Top Bar**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [🔮 LIVE] Last updated: 2s | [⟳] [⛶] Time: 2d 5h 23mâ"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Leaderboard Table**:
+```
+Rankâ"‚ Trader          â"‚ Score  â"‚ P/L      â"‚ Win%  â"‚ Tradesâ"‚ Trend
+â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€â"€â"¼â"€â"€â"€â"€â"€â"€
+ðŸ¥‡ 1 â"‚ @trader_pro âœ¨  â"‚ 95.7   â"‚ +$1,250  â"‚ 75%   â"‚ 12    â"‚ â†' +3
+ðŸ¥ˆ 2 â"‚ @crypto_king ðŸŒ±  â"‚ 92.3   â"‚ +$1,100  â"‚ 70%   â"‚ 15    â"‚ â†" -1
+ðŸ¥‰ 3 â"‚ @day_master âš"ï¸   â"‚ 89.8   â"‚ +$980    â"‚ 68%   â"‚ 10    â"‚ - 0
+```
+
+**Top 3 Effects**:
+- **1st**: Gold gradient, crown icon, shimmer
+- **2nd**: Silver gradient, metallic shine
+- **3rd**: Bronze gradient, minimal glow
+
+**Your Position Card** (Sticky):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ YOUR RANK: #12 â†' +5                    â"‚
+â"‚ Score: 78.4 | P/L: +$567 | Win%: 61%   â"‚
+â"‚ Next rank: +2.3 points needed          â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Real-Time Animations**:
+- Position swap: Smooth slide (300ms)
+- Score update: Counter roll with flash
+- Rank change: Arrow bounce
+- New leader: Confetti + "NEW LEADER!" banner
+
+**Design Priority**: HIGH  
+**Mobile**: Optimized with horizontal scroll  
+**Performance**: Virtual scrolling for 100+ rows
+
+---
+
+#### 29. User Profile (Public View) ⭐
+
+**Route**: `/profile/[username]`  
+**Access**: All tiers  
+**Purpose**: Personal brand showcase
+
+**Banner & Avatar** (Immersive):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [Parallax Banner Image with Gradient Overlay]       â"‚
+â"‚                                                      â"‚
+â"‚   [Avatar]  John "TradePro" Smith                   â"‚
+â"‚   (200x200) @tradepro  âœ¨ TS Elite  Online ðŸŸ¢      â"‚
+â"‚   [Glow]                                            â"‚
+â"‚                                                      â"‚
+â"‚   "Swing trader | BTC maximalist | $1M+ P/L"       â"‚
+â"‚                                                      â"‚
+â"‚   [Follow 12.5K] [Subscribers 3.2K] [Signals 847]  â"‚
+â"‚                                                      â"‚
+â"‚   [ðŸ"¥ Streak: 12] [Win Rate: 73%]                   â"‚
+â"‚                                                      â"‚
+â"‚   [Follow âž•] [Subscribe $10] [Share] [Message]     â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Avatar Features**:
+- Tier-specific glow border (animated)
+- Win streak ring around avatar
+- Status indicator (pulsing dot)
+- Hover: Card with stats
+
+**Badge Collection**:
+- Trophy badges below name
+- Hover: Grow + glow + tooltip
+- Legendary badges shimmer
+- 3D rotation on mouse move
+
+**Performance Stats** (3 Cards):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â" â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â" â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ All-Time P/L   â"‚ â"‚ Avg Win Rate   â"‚ â"‚ Global Rank    â"‚
+â"‚                â"‚ â"‚                â"‚ â"‚                â"‚
+â"‚   +$12,340     â"‚ â"‚      68%       â"‚ â"‚     #247       â"‚
+â"‚   [Sparkline]  â"‚ â"‚   [Ring Chart] â"‚ â"‚ [Trophy ðŸ†]    â"‚
+â"‚                â"‚ â"‚                â"‚ â"‚   Top 1%       â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Card Effects**:
+- Glassmorphism + gradient border
+- Hover: Lift + glow + tooltip
+- Animated charts
+- Counter roll on load
+
+**Tabbed Content**:
+- **Feed**: User's signals
+- **Competitions**: Trophy case with glass cabinet
+- **About**: Rich text sections
+- **Videos**: Grid with play overlays
+
+**Activity Heatmap**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚  Activity in Last Year                 â"‚
+â"œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"¤
+â"‚  Jan [â– â– â–¡â– ] ... Dec [â– â– â– â– ]        â"‚
+â"‚  (GitHub-style contribution graph)     â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Design Priority**: HIGH  
+**Mobile**: Important (collapsible sections)
+
+---
+
+#### 17. Portfolio Dashboard
+
+**Route**: `/portfolio`  
+**Access**: All tiers  
+**Purpose**: AI-powered trading journal
+
+**Top Bar**:
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+â"‚ [Connect Broker] [Add Trade âž•] [Date Range â–¼] [Export] â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Key Metrics** (4 Cards):
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â" â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â" â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â" â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚Portfolio     â"‚ â"‚Today's      â"‚ â"‚Overall      â"‚ â"‚Win         â"‚
+â"‚Value        â"‚ â"‚P/L          â"‚ â"‚P/L          â"‚ â"‚Rate        â"‚
+â"‚             â"‚ â"‚             â"‚ â"‚             â"‚ â"‚            â"‚
+â"‚  $25,430    â"‚ â"‚  +$342      â"‚ â"‚  +$2,340    â"‚ â"‚   67%      â"‚
+â"‚  [â†' +2.3%] â"‚ â"‚  [Glow]     â"‚ â"‚  [Sparkline]â"‚ â"‚[Ring Chart]â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜ â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+**Main Content** (2-column):
+
+**Left: Recent Trades Table**:
+- Color-coded P/L with glows
+- Hover: Lift + highlight
+- Click: Expand or navigate
+- Empty state: Friendly illustration
+
+**Right: Widgets**:
+1. **Performance Calendar** (mini)
+2. **AI Assistant** (âœ¨ Ask Sphirie)
+3. **Trade Insights** (NEW!)
+
+**Design Priority**: HIGH  
+**Mobile**: Stacked cards
+
+---
+
+## ðŸ'Ž PREMIUM COMPONENTS
+
+### Glassmorphism
+
+```scss
+.glass-card {
+  background: rgba(20, 27, 58, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+```
+
+### Gradient Text
+
+```scss
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+```
+
+### Button States
+
+```scss
+.button-premium {
+  background: $primary-gradient;
+  box-shadow: $glow-medium;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: $glow-intense;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+```
+
+---
+
+## ðŸ"± MOBILE DESIGN
+
+### Bottom Navigation (Mobile Only)
+
+```
+â"Œâ"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"
+â"‚ [ðŸ  Home] [ðŸ"º Live] [âž• Post] [ðŸ'¬ Chat] [ðŸ'¤ You] â"‚
+â""â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"˜
+```
+
+- Fixed at bottom
+- Glassmorphism background
+- Active icon glows
+- Notification badges
+- Haptic feedback
+
+### Mobile Gestures
+
+- Swipe right: Back
+- Swipe left: Quick actions
+- Pull down: Refresh
+- Long press: Context menu
+- Pinch: Zoom charts
+
+---
+
+## âœ… FIGMA FILE CHECKLIST
+
+### Per Page:
+- [ ] Desktop (1440px)
+- [ ] Tablet (768px)
+- [ ] Mobile (375px)
+- [ ] All states (default, hover, active, disabled, loading, error)
+- [ ] Empty states
+- [ ] Tier restrictions shown
+- [ ] Animations documented
+- [ ] Accessibility checked
+
+### Components:
+- [ ] Design system complete
+- [ ] All variants created
+- [ ] Auto-layout applied
+- [ ] Naming conventions followed
+- [ ] Prototypes linked
+
+---
+
+## ðŸŽ¯ IMPLEMENTATION PRIORITIES
+
+**Phase 1** (Weeks 1-4): Foundation
+- Design system
+- Core components
+- Landing + Auth + Feed
+
+**Phase 2** (Weeks 5-8): Immersion
+- Gamification system
+- Advanced animations
+- Feed enhancements
+
+**Phase 3** (Weeks 9-12): Competition
+- Live streaming
+- Competitions
+- Portfolio tools
+
+**Phase 4** (Weeks 13-16): Polish
+- Mobile optimization
+- Accessibility
+- Performance
+
+---
+
+## ðŸŽ¬ DESIGN PRINCIPLES
+
+1. **Motion with Purpose**: Every animation tells a story
+2. **Gamification Everywhere**: Celebrate wins, create FOMO
+3. **Visual Hierarchy**: Important actions glow
+4. **Real-time Feel**: Instant feedback
+5. **Attention to Detail**: Premium micro-interactions
+6. **Performance First**: 60fps always
+7. **Accessibility Always**: WCAG AA minimum
+8. **Mobile Matters**: Touch-friendly
+9. **Consistent System**: Use tokens
+10. **User-Tested**: Validate with real traders
+
+---
+
+**This is your complete UI specification. Every page, every animation, every interaction designed for maximum immersion and user retention.**
+
+**Version**: 2.0 Enhanced  
+**Date**: January 20, 2025  
+**Status**: Production Ready ðŸš€
