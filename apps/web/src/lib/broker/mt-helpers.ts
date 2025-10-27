@@ -1,6 +1,19 @@
 /**
  * MT4/MT5 Helper Utilities
  * Provides functions for working with MT4/MT5 credential-based connections
+ *
+ * ZERO-COST ARCHITECTURE:
+ * MT4/MT5 connections use a LOCAL BRIDGE that runs on the user's machine.
+ * This eliminates the need for a 24/7 server ($0 operational cost).
+ *
+ * Setup:
+ * 1. User downloads TradoSphere Desktop Bridge (lightweight Electron app)
+ * 2. Bridge runs locally and connects to user's MT4/MT5 terminal
+ * 3. Bridge exposes WebSocket server on localhost:8080
+ * 4. Web app connects to ws://localhost:8080/mt4 or ws://localhost:8080/mt5
+ * 5. All data sync happens through local WebSocket (no server costs)
+ *
+ * Alternative: Use MetaAPI.cloud (free tier: 2 accounts)
  */
 
 import { createClient } from '@/lib/supabase/server';

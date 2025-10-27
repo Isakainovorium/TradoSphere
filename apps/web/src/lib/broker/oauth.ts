@@ -303,8 +303,8 @@ function getApiBaseUrl(brokerName: string): string {
     ninjatrader: 'https://api.ninjatrader.com/v1',
     rhythmic: 'https://api.rhythmicsm.com/v1',
     tradelocker: 'https://api.tradelocker.com/v1',
-    mt4: 'https://mt4-api.tradosphere.com/v1', // Custom MT4 bridge API
-    mt5: 'https://mt5-api.tradosphere.com/v1', // Custom MT5 bridge API
+    // MT4/MT5 use local bridge: ws://localhost:8080/mt4 or ws://localhost:8080/mt5
+    // No server-side API needed (zero cost operation)
   };
 
   return urls[brokerName] || '';
