@@ -55,6 +55,15 @@ export const BROKER_CONFIGS: Record<string, BrokerOAuthConfig> = {
     redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/broker/callback/rhythmic`,
     usePKCE: true,
   },
+  tradelocker: {
+    clientId: process.env.TRADELOCKER_CLIENT_ID!,
+    clientSecret: process.env.TRADELOCKER_CLIENT_SECRET!,
+    authorizationUrl: 'https://api.tradelocker.com/oauth/authorize',
+    tokenUrl: 'https://api.tradelocker.com/oauth/token',
+    scopes: ['trade', 'read', 'account'],
+    redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/broker/callback/tradelocker`,
+    usePKCE: true,
+  },
 };
 
 // =====================================================
@@ -293,6 +302,9 @@ function getApiBaseUrl(brokerName: string): string {
     binance: 'https://api.binance.com/api/v3',
     ninjatrader: 'https://api.ninjatrader.com/v1',
     rhythmic: 'https://api.rhythmicsm.com/v1',
+    tradelocker: 'https://api.tradelocker.com/v1',
+    mt4: 'https://mt4-api.tradosphere.com/v1', // Custom MT4 bridge API
+    mt5: 'https://mt5-api.tradosphere.com/v1', // Custom MT5 bridge API
   };
 
   return urls[brokerName] || '';
