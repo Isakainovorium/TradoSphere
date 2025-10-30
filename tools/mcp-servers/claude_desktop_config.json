@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "tradosphere-context": {
+      "command": "node",
+      "args": ["./dist/mcp/server.js"],
+      "cwd": "/home/user/TradoSphere/tools/mcp-servers/tradosphere-context",
+      "description": "TradoSphere Context Engine - Search 346 indexed docs, features, and routes"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Project knowledge persistence - Store architectural decisions and learnings"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_YOUR_TOKEN_HERE"
+      },
+      "description": "Repository management - Branches, PRs, issues, releases via natural language"
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "@exa/mcp-server"],
+      "env": {
+        "EXA_API_KEY": "YOUR_EXA_API_KEY_HERE"
+      },
+      "description": "Technical research - Find production code patterns and solutions"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Architectural decomposition - Break complex features into implementable steps"
+    }
+  }
+}
