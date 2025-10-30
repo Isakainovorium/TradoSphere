@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "tradosphere-context": {
+      "command": "node",
+      "args": [
+        "tools/mcp-servers/tradosphere-context/dist/mcp/server.js"
+      ],
+      "env": {}
+    }
+  }
+}
+
