@@ -921,19 +921,72 @@ TradoSphere is built by traders, for traders. We welcome contributions from the 
 5. Open a Pull Request
 
 ### Development Setup
-```bash
-# Clone the repo
-git clone https://github.com/isekai-navorium/tradeosphere.git
 
-# Install dependencies
-npm install
+TradoSphere uses a **monorepo structure** with pnpm workspaces. Here's how to get started:
+
+```bash
+# Clone the repository
+git clone https://github.com/Isakainovorium/TradoSphere.git
+cd TradoSphere
+
+# Install pnpm if you haven't already
+npm install -g pnpm
+
+# Install all dependencies (workspace-aware)
+pnpm install
 
 # Set up environment variables
 cp .env.example .env.local
+# Edit .env.local with your Supabase, Stripe, and API keys
 
-# Run development server
-npm run dev
+# Run database migrations
+cd supabase
+supabase start  # If using local Supabase
+# Or apply migrations to your hosted instance
+
+# Start development servers
+pnpm dev              # Runs all services concurrently
+pnpm dev:web          # Frontend only (Next.js)
+pnpm dev:api          # Backend only (NestJS)
+
+# Run tests
+pnpm test             # All tests
+pnpm test:e2e         # Playwright E2E tests
+pnpm test:unit         # Unit tests
 ```
+
+### Project Structure
+
+```
+tradosphere/
+├── apps/
+│   ├── web/          # Next.js 14 frontend application
+│   └── api/          # NestJS backend services
+├── packages/
+│   ├── types/        # Shared TypeScript types
+│   └── ui/           # Shared UI components (future)
+├── supabase/
+│   └── migrations/   # Database migrations
+└── tools/            # Development tools and scripts
+```
+
+### Key Technologies
+
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend**: NestJS, PostgreSQL (Supabase), Redis (Upstash)
+- **Real-time**: Socket.io, Agora.io, Supabase Realtime
+- **AI**: Gemini 2.0 Flash API
+- **Payments**: Stripe
+
+### Environment Variables
+
+Required environment variables are documented in `.env.example`. Key variables include:
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `GEMINI_API_KEY` - Google Gemini API key
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `AGORA_APP_ID` - Agora.io application ID
+- `AGORA_APP_CERTIFICATE` - Agora.io app certificate
 
 See `CONTRIBUTING.md` for detailed development guidelines.
 
