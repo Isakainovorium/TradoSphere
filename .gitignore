@@ -139,27 +139,5 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# TradoSphere Documentation & Tools (Private - Local Only)
-# NOTE: On tools branch, allow tools/ directory to be tracked
-# All documentation files - only visible to AI agents and developer
-*.md
-!README.md
-!LICENSE.md
-!tools/**/*.md
-
-# Context Engine - AI tooling (private on main branches, but allow in tools/)
-context-engine/
-!tools/
-
-# Documentation text files
-*.txt
-tradosphere-*.md
-
-# Task and summary reports
-*_REPORT.md
-*_SUMMARY.md
-*COMPLETION*.md
-MCP_SETUP.md
-
-# Exception: Allow tools directory on tools branch
-!tools/
+# Sensitive Configuration Files Only
+# Keep API keys, secrets, and credentials private
